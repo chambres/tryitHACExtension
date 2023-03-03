@@ -6,7 +6,6 @@ function delRow(elem){
 
 
 function add(variable){ 
-	console.log("wow");
 	console.log(variable.parentElement.parentElement.parentElement.parentElement); 
 
     var a =  [];
@@ -30,7 +29,8 @@ function add(variable){
     if(!hasNumber.test(a[4])){
       return;
     }
-    if(a[5] == ""){ a[5] = "100.00"; }
+
+    if(a[5] == ""){ a[5] = "100.00"; } //defaults to 100
 
     console.log(a)
 

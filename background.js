@@ -33,9 +33,18 @@ for (var i = 0; i < slides.length; i++) {
 }
 var cats = new Set(categories);
 
-data = `<tr class="ssg-asp-table-header-row" style="background-color:rgb(0, 255, 255);" >
-			<td>Date Due (Optional)</td><td>Date Assigned (Optional)</td><td>Assignment (Optional)  </td><td>Category</td><td>Score</td><td>Total Points</td><td class="sg-view-quick">Weight</td><td class="sg-view-quick">Weighted Score</td><td class="sg-view-quick">Weighted Total Points</td><td class="sg-view-quick">Percentage</td>
-		</tr>`
+data = `<tr class="ssg-asp-table-header-row" style="background-color:rgb(0, 255, 255);">
+        <td>Date Due (Optional)</td>
+        <td>Date Assigned (Optional)</td>
+        <td>Assignment (Optional) </td>
+        <td>Category</td>
+        <td>Score</td>
+        <td>Total Points</td>
+        <td class="sg-view-quick">Weight</td>
+        <td class="sg-view-quick">Weighted Score</td>
+        <td class="sg-view-quick">Weighted Total Points</td>
+        <td class="sg-view-quick">Percentage</td>
+        </tr>`
 
 
 dat = `<tr class="ssg-asp-table-data-row">
@@ -45,23 +54,17 @@ dat = `<tr class="ssg-asp-table-data-row">
    <td><select class="select-category"></select></td>
    <td><input type="text" id="Score" name="username"></td>
    <td><input type="text" id="Total Points" name="username"><button type="button" class="btn btn-primary" id="add" onclick='console.log(this.parentElement.parentElement.parentElement.parentElement); window.parent.add(this);'>Add</button></td>
-</tr>`
+    </tr>`
 
 
 
 $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(data);
-
-    
 $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(dat); 
+//adding extra row
 
 
-const select = $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("select-category"));
 
-
-console.log(select)
-
-
-console.log(cats)
+    const select = $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("select-category"));
 
     // Retrieve the dictionary from Chrome storage
     chrome.storage.sync.get(["myDict"], function(result) {
@@ -70,7 +73,7 @@ console.log(cats)
         console.log("no dict");
         const myDict = {};
         cats.forEach((value) => {
-        myDict[value] = "";
+            myDict[value] = "";
         });
 
         // Save the dictionary to Chrome storage
@@ -89,10 +92,6 @@ console.log(cats)
         select.append(option);console.log("saved");
 
     }
-
-    function isEmpty(obj) {
-        return Object.keys(obj).length === 0;
-      }
 
     function recalculate(){
             var data = result.myDict;
@@ -152,7 +151,7 @@ console.log(cats)
             
                 
                 console.log(newGrades[count])
-                document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-header-heading sg-right")[i].innerHTML = '<style="color:blue;"> Classwork Average ' + Math.round(newGrades[count]);
+                document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-header-heading sg-right")[i].innerHTML = '<style="color:red;"> Classwork Average ' + Math.round(newGrades[count]);
                 count++;
             }
     }
