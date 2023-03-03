@@ -90,9 +90,15 @@ console.log(cats)
 
     }
 
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+      }
+
     function recalculate(){
-        var data = result.myDict;
+            var data = result.myDict;
             console.log(data)
+
+            
 
             //data = {Major: '80', Minor: '20', Other: '10'}
 
@@ -107,10 +113,16 @@ console.log(cats)
 
                 for(var j = 0; j < table.getElementsByClassName('sg-asp-table-data-row').length; j++){
                     var row = table.getElementsByClassName('sg-asp-table-data-row')[j];
-                    if((row.getElementsByTagName("td").length) > 6){ //avoid full view nonsense
+                    if((row.getElementsByTagName("td").length) > 6){ //avoid full view
                         if(row.getElementsByTagName("td")[4].innerHTML.trim() == ''){continue;}
 
                         var weight = data[(row.getElementsByTagName("td")[3].innerHTML.trim())];
+                        if(weight == ''){
+                            alert("Enter your weights in the extension!");
+                            return;
+                        }
+
+
                         
                         var grade = parseInt(row.getElementsByTagName("td")[4].innerHTML.trim());
                         var outof = parseInt(row.getElementsByTagName("td")[5].innerHTML.trim());
@@ -124,8 +136,6 @@ console.log(cats)
                     }
                 }
 
-                console.log(totalWeight)
-                console.log(weightedAverage)
                 if(totalWeight == 0 || weightedAverage == 0){continue;}
 
                 
@@ -146,14 +156,13 @@ console.log(cats)
             
                 
                 console.log(newGrades[count])
-                document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-header-heading sg-right")[i].innerHTML = "Classwork Average " + Math.round(newGrades[count]);
+                document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-header-heading sg-right")[i].innerHTML = '<style="color:blue;"> Classwork Average ' + Math.round(newGrades[count]);
                 count++;
-                
             }
     }
 
 
-  document.addEventListener('yourCustomEvent', function (e) {
+  document.addEventListener('yourCustomEvent', function (e) { //triggered by the add button in script.js
     chrome.storage.sync.get(["myDict"], function(result) {
         recalculate();
     });
