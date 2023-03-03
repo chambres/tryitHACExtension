@@ -58,8 +58,7 @@ function add(variable){
     document.dispatchEvent(new CustomEvent('recalculate', { detail: a }));
 
     function intToFloat(num, decPlaces) { 
-        var a = Number(num).toFixed(decPlaces)
-        return a;
+        return Number(num).toFixed(decPlaces)
     }
 
 
