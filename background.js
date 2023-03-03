@@ -90,11 +90,8 @@ console.log(cats)
 
     }
 
-
-  document.addEventListener('yourCustomEvent', function (e) {
-    chrome.storage.sync.get(["myDict"], function(result) {
-    console.log("Dictionary retrieved from Chrome storage: ", result.myDict);
-            var data = result.myDict;
+    function recalculate(){
+        var data = result.myDict;
             console.log(data)
 
             //data = {Major: '80', Minor: '20', Other: '10'}
@@ -153,7 +150,12 @@ console.log(cats)
                 count++;
                 
             }
+    }
 
+
+  document.addEventListener('yourCustomEvent', function (e) {
+    chrome.storage.sync.get(["myDict"], function(result) {
+        recalculate();
     });
 
 
