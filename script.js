@@ -1,7 +1,7 @@
 
 function delRow(elem){
   elem.parentNode.parentNode.remove();
-  document.dispatchEvent(new CustomEvent('yourCustomEvent', { detail: "" }));  
+  document.dispatchEvent(new CustomEvent('recalculate', { detail: "" }));  
 }
 
 
@@ -55,7 +55,7 @@ function add(variable){
 
     var a = variable.parentElement.parentElement.parentElement.parentElement
     console.log(a);
-    document.dispatchEvent(new CustomEvent('yourCustomEvent', { detail: a }));
+    document.dispatchEvent(new CustomEvent('recalculate', { detail: a }));
 
     function intToFloat(num, decPlaces) { 
         var a = Number(num).toFixed(decPlaces)

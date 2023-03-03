@@ -98,10 +98,6 @@ console.log(cats)
             var data = result.myDict;
             console.log(data)
 
-            
-
-            //data = {Major: '80', Minor: '20', Other: '10'}
-
             newGrades = [];
 
             for( var i = 0; i < document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table").length; i++){
@@ -162,7 +158,7 @@ console.log(cats)
     }
 
 
-  document.addEventListener('yourCustomEvent', function (e) { //triggered by the add button in script.js
+  document.addEventListener('recalculate', function (e) { //triggered by the add button in script.js
     chrome.storage.sync.get(["myDict"], function(result) {
         recalculate();
     });
