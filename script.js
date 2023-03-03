@@ -44,7 +44,7 @@ function add(variable){
           </td><td>${a[3]}</td>
           <td align="center">
           ${intToFloat(a[4], 2)}
-           <input type="button" onclick="window.parent.delRow(this)" style="float:none!important;display:inline;" value="X" />
+           <input type="button" onclick="window.parent.delRow(this)" style="float:none!important;display:inline;" value="x" />
           </td>
           <td>${a[5]}</td><td class="sg-view-quick">${a[5]}</td><td class="sg-view-quick">${a[5]}</td><td class="sg-view-quick">${a[5]}</td><td class="sg-view-quick">${a[5]}</td>
           </tr>`
