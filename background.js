@@ -1,99 +1,96 @@
-//The code that is fired upon page load
-//to check your plugin js is working uncomment the next line.
-
-
-
-
-
 $(document).ready(function() {
 
 
-var s = document.createElement('script');
-s.src = chrome.runtime.getURL('script.js');
-s.onload = function() {
-    this.remove();
-};
-(document.head || document.documentElement).appendChild(s);
+
+    var s = document.createElement('script');
+    s.src = chrome.runtime.getURL('script.js');
+    s.onload = function() {
+        this.remove();
+    };
+    (document.head || document.documentElement).appendChild(s);
 
 
-const regex = /Category:\s*(\w+)/;
+    const regex = /Category:\s*(\w+)/;
 
-var categories = [];
+    var categories = [];
 
-var slides = document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table-data-row");
-for (var i = 0; i < slides.length; i++) {
-   console.log()
+    var slides = document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table-data-row");
+    for (var i = 0; i < slides.length; i++) {
+    console.log()
 
-    var match = slides.item(i).innerHTML.match(regex);
-    var category = match && match[1];
-    if(category == null){continue;}
-    console.log(category);
-    categories.push(category);
-    
-}
-var cats = new Set(categories);
+        var match = slides.item(i).innerHTML.match(regex);
+        var category = match && match[1];
+        if(category == null){continue;}
+        categories.push(category);
+        
+    }
+    var cats = new Set(categories);
 
-data = `<tr class="ssg-asp-table-header-row" style="background-color:rgb(0, 255, 255);">
-        <td>Date Due (Optional)</td>
-        <td>Date Assigned (Optional)</td>
-        <td>Assignment (Optional) </td>
-        <td>Category</td>
-        <td>Score</td>
-        <td>Total Points</td>
-        <td class="sg-view-quick">Weight</td>
-        <td class="sg-view-quick">Weighted Score</td>
-        <td class="sg-view-quick">Weighted Total Points</td>
-        <td class="sg-view-quick">Percentage</td>
+    data = `<tr class="ssg-asp-table-header-row" style="background-color:rgb(0, 255, 255);">
+            <td>Date Due (Optional)</td>
+            <td>Date Assigned (Optional)</td>
+            <td>Assignment (Optional) </td>
+            <td>Category</td>
+            <td>Score</td>
+            <td>Total Points</td>
+            <td class="sg-view-quick">Weight</td>
+            <td class="sg-view-quick">Weighted Score</td>
+            <td class="sg-view-quick">Weighted Total Points</td>
+            <td class="sg-view-quick">Percentage</td>
+            </tr>`
+
+
+    dat = `<tr class="ssg-asp-table-data-row">
+    <td><input type="text" id="Date Due" name="username"></td>
+    <td><input type="text" id="Date Assigned" name="username"></td>
+    <td><input type="text" id="Assignment" name="username"></td>
+    <td><select class="select-category"></select></td>
+    <td><input type="text" id="Score" class="scoretab" name="username"></td>
+    <td><input type="text" id="Total Points" name="username"><button type="button" class="btn btn-primary" id="add" onclick='console.log(this.parentElement.parentElement.parentElement.parentElement); window.parent.add(this);'>Add</button></td>
         </tr>`
 
 
-dat = `<tr class="ssg-asp-table-data-row">
-   <td><input type="text" id="Date Due" name="username"></td>
-   <td><input type="text" id="Date Assigned" name="username"></td>
-   <td><input type="text" id="Assignment" name="username"></td>
-   <td><select class="select-category"></select></td>
-   <td><input type="text" id="Score" name="username"></td>
-   <td><input type="text" id="Total Points" name="username"><button type="button" class="btn btn-primary" id="add" onclick='console.log(this.parentElement.parentElement.parentElement.parentElement); window.parent.add(this);'>Add</button></td>
-    </tr>`
+
+    $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(data);
+    $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(dat); 
+    //adding extra row
 
 
 
-$(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(data);
-$(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("sg-asp-table")).append(dat); 
-//adding extra row
+        const select = $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("select-category"));
 
+        // Retrieve the dictionary from Chrome storage
+        chrome.storage.sync.get(["myDict"], function(result) {
+        if(result.myDict == undefined){
+            const myDict = {};
+            cats.forEach((value) => {
+                myDict[value] = "";
+            });
 
+            // Save the dictionary to Chrome storage
+            chrome.storage.sync.set({ myDict }, function() {
+            });
+        }
+        else{
+        }
 
-    const select = $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("select-category"));
-
-    // Retrieve the dictionary from Chrome storage
-    chrome.storage.sync.get(["myDict"], function(result) {
-    console.log("Dictionary retrieved from Chrome storage: ", result.myDict);
-    if(result.myDict == undefined){
-        console.log("no dict");
-        const myDict = {};
-        cats.forEach((value) => {
-            myDict[value] = "";
         });
 
-        // Save the dictionary to Chrome storage
-        chrome.storage.sync.set({ myDict }, function() {
-            console.log("Dictionary saved to Chrome storage");
-        });
-    }
-    else{
-        console.log("dict exists");
-    }
+        for (const cat of cats) {
+            const option = $("<option>").text(cat);
+            select.append(option);
 
-    });
+        }
 
-    for (const cat of cats) {
-        const option = $("<option>").text(cat);
-        select.append(option);console.log("saved");
+        $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("scoretab")).keyup(function(event) {
+            var $input = $(this);
+            if(event.keyCode == 13){
+                $input.parents()[1].getElementsByClassName("btn btn-primary")[0].click()
+                document.getElementById("sg-legacy-iframe").contentWindow.document.getElementsByClassName("ui-button-text")[0].click()
+            }
+        });        
 
-    }
-
-    function recalculate(){
+    function recalculate(result){
             var data = result.myDict;
             console.log(data)
 
@@ -157,14 +154,36 @@ $(document.getElementById("sg-legacy-iframe").contentWindow.document.getElements
     }
 
 
-  document.addEventListener('recalculate', function (e) { //triggered by the add button in script.js
-    chrome.storage.sync.get(["myDict"], function(result) {
-        recalculate();
+
+
+    
+
+    document.addEventListener('recalculate', function (e) { //triggered by the add button in script.js
+        chrome.storage.sync.get(["myDict"], function(result) {
+            recalculate(result);
+        });
+    });
+
+    document.addEventListener('requestWeightCheck', function (e) { 
+        chrome.storage.sync.get(["myDict"], function(result) {
+            console.log(result.myDict)
+            console.log("weightRquested");
+            var isWeightComplete = Boolean(isWeight(result.myDict)).toString();
+            console.log(isWeightComplete);
+            document.dispatchEvent(new CustomEvent('isWeightComplete', { detail: isWeightComplete}));
+        });
     });
 
 
-  });
 
+    function isWeight(myDict){
+        for(let k in myDict){
+            if(myDict[k] == ''){
+                return false;
+            }
+        }
+        return true;
+    }
 
 
 
